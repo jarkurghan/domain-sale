@@ -1,0 +1,47 @@
+FROM oven/bun:1.3 AS dependencies
+
+WORKDIR /app
+
+COPY package.json bun.lock ./
+
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun install --frozen-lockfile
+
+FROM oven/bun:1.3 AS builder
+
+WORKDIR /app
+
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY . .
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+ARG NEXT_PUBLIC_TASHRIF_ONLINE_SAVDO_CLIENT_ID
+ARG NEXT_PUBLIC_TASHRIF_ONLINESAVDO_CLIENT_ID
+ARG NEXT_PUBLIC_TASHRIF_MANHWA_CLIENT_ID
+ENV NEXT_PUBLIC_TASHRIF_ONLINE_SAVDO_CLIENT_ID=$NEXT_PUBLIC_TASHRIF_ONLINE_SAVDO_CLIENT_ID
+ENV NEXT_PUBLIC_TASHRIF_ONLINESAVDO_CLIENT_ID=$NEXT_PUBLIC_TASHRIF_ONLINESAVDO_CLIENT_ID
+ENV NEXT_PUBLIC_TASHRIF_MANHWA_CLIENT_ID=$NEXT_PUBLIC_TASHRIF_MANHWA_CLIENT_ID
+
+RUN bun run build
+
+FROM oven/bun:1.3 AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+RUN mkdir .next && chown bun:bun .next
+
+COPY --from=builder --chown=bun:bun /app/.next/standalone ./
+COPY --from=builder --chown=bun:bun /app/.next/static ./.next/static
+
+USER bun
+
+EXPOSE 3000
+
+CMD ["bun", "server.js"]
