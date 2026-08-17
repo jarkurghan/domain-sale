@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import { connection } from "next/server";
 import { Tashrif } from "tashrif/react";
 
 const CLIENT_IDS: Record<string, string> = {
@@ -16,6 +17,7 @@ function hostnameFromHost(host: string | null): string {
 }
 
 export async function TashrifByDomain() {
+    await connection();
     const headerList = await headers();
     const hostname = hostnameFromHost(headerList.get("host"));
     const clientId = CLIENT_IDS[hostname];
