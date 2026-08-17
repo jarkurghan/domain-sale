@@ -20,6 +20,9 @@ export async function TashrifByDomain() {
     const hostname = hostnameFromHost(headerList.get("host"));
     const clientId = CLIENT_IDS[hostname];
 
+    console.log("hostname", hostname);
+    console.log(CLIENT_IDS);
+
     if (!clientId) return null;
 
     return <Tashrif clientId={clientId} />;
