@@ -3,7 +3,7 @@ import { connection } from "next/server";
 import { Tashrif } from "tashrif/react";
 
 const CLIENT_IDS: Record<string, string> = {
-    "online-savdo.uz": process.env.NEXT_PUBLIC_TASHRIF_ONLINE_SAVDO_CLIENT_ID!,
+    "online-savdo.uz": process.env.ONLINE_SAVDO_CLIENT_ID!,
     "onlinesavdo.uz": process.env.NEXT_PUBLIC_TASHRIF_ONLINESAVDO_CLIENT_ID!,
     "manhwa.uz": process.env.NEXT_PUBLIC_TASHRIF_MANHWA_CLIENT_ID!,
 };
