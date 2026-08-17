@@ -5,7 +5,7 @@ import { Tashrif } from "tashrif/react";
 const CLIENT_IDS: Record<string, string> = {
     "online-savdo.uz": process.env.TASHRIF_ONLINE_SAVDO_CLIENT_ID!,
     "onlinesavdo.uz": process.env.TASHRIF_ONLINESAVDO_CLIENT_ID!,
-    "manhwa.uz": process.env.NEXT_PUBLIC_TASHRIF_MANHWA_CLIENT_ID!,
+    "manhwa.uz": process.env.TASHRIF_MANHWA_CLIENT_ID!,
 };
 
 function hostnameFromHost(host: string | null): string {
